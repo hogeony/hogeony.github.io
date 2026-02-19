@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { remark } from 'remark';
 import html from 'remark-html';
-import mermaid from 'mermaid';
+import dynamic from 'next/dynamic';
 
 interface SlideViewerProps {
   content: string;
@@ -71,14 +71,30 @@ export default function SlideViewer({ content }: SlideViewerProps) {
     setSlides(finalResult);
   }, [content]);
 
+  const [mermaidLoaded, setMermaidLoaded] = useState(false);
+  const slideContentRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    // Mermaid 초기화
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'default',
-      securityLevel: 'loose',
-      fontFamily: 'inherit',
-    });
+    // Mermaid 동적 로드 및 초기화
+    const loadMermaid = async () => {
+      try {
+        const mermaidModule = await import('mermaid');
+        const mermaid = mermaidModule.default;
+        
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'default',
+          securityLevel: 'loose',
+          fontFamily: 'inherit',
+        });
+        
+        setMermaidLoaded(true);
+      } catch (error) {
+        console.error('Mermaid 로드 실패:', error);
+      }
+    };
+
+    loadMermaid();
   }, []);
 
   useEffect(() => {
@@ -100,15 +116,17 @@ export default function SlideViewer({ content }: SlideViewerProps) {
 
   // Mermaid 다이어그램 렌더링
   useEffect(() => {
-    if (htmlSlides.length === 0 || !htmlSlides[currentSlide]) return;
+    if (htmlSlides.length === 0 || !htmlSlides[currentSlide] || !mermaidLoaded) return;
 
     const renderMermaid = async () => {
-      // 현재 슬라이드의 컨테이너 찾기
-      const slideContainer = document.querySelector('.slide-content');
-      if (!slideContainer) return;
+      if (!slideContentRef.current) return;
 
-      // Mermaid 코드 블록 찾기 (pre > code.language-mermaid)
-      const mermaidPreBlocks = slideContainer.querySelectorAll('pre code.language-mermaid');
+      // Mermaid 모듈 동적 import
+      const mermaidModule = await import('mermaid');
+      const mermaid = mermaidModule.default;
+
+      // 현재 슬라이드의 컨테이너에서 Mermaid 코드 블록 찾기
+      const mermaidPreBlocks = slideContentRef.current.querySelectorAll('pre code.language-mermaid');
       
       if (mermaidPreBlocks.length === 0) return;
 
@@ -122,21 +140,23 @@ export default function SlideViewer({ content }: SlideViewerProps) {
           const parentPre = codeBlock.parentElement;
           if (!parentPre || parentPre.tagName !== 'PRE') continue;
 
-          // 이미 렌더링된 경우 스킵
-          if (parentPre.querySelector('.mermaid-rendered')) continue;
+          // 이미 렌더링된 경우 스킵 (data-mermaid-rendered 속성 확인)
+          if (parentPre.hasAttribute('data-mermaid-rendered')) continue;
 
           // 고유 ID 생성
           const id = `mermaid-${currentSlide}-${i}-${Date.now()}`;
           
           // Mermaid 컨테이너 생성
           const mermaidDiv = document.createElement('div');
-          mermaidDiv.className = 'mermaid mermaid-rendered';
+          mermaidDiv.className = 'mermaid';
           mermaidDiv.id = id;
           mermaidDiv.textContent = code;
           mermaidDiv.style.textAlign = 'center';
           mermaidDiv.style.margin = '1rem 0';
+          mermaidDiv.style.minHeight = '200px';
 
           // 기존 pre 요소 교체
+          parentPre.setAttribute('data-mermaid-rendered', 'true');
           parentPre.replaceWith(mermaidDiv);
 
           // Mermaid 렌더링
@@ -152,10 +172,10 @@ export default function SlideViewer({ content }: SlideViewerProps) {
     // HTML이 렌더링된 후 Mermaid 처리
     const timer = setTimeout(() => {
       renderMermaid();
-    }, 200);
+    }, 300);
 
     return () => clearTimeout(timer);
-  }, [htmlSlides, currentSlide]);
+  }, [htmlSlides, currentSlide, mermaidLoaded]);
 
   const goToNext = () => {
     if (currentSlide < slides.length - 1) {
@@ -221,6 +241,8 @@ export default function SlideViewer({ content }: SlideViewerProps) {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="aspect-video bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800 p-12 flex items-center justify-center min-h-[600px] relative">
           <div
+            ref={slideContentRef}
+            key={`slide-${currentSlide}`}
             className="w-full h-full flex flex-col justify-center slide-content"
             dangerouslySetInnerHTML={{
               __html: htmlSlides[currentSlide] || '',
