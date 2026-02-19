@@ -22,12 +22,13 @@ export function generateStaticParams() {
     }));
 }
 
-export default function TypePage({
+export default async function TypePage({
   params,
 }: {
-  params: { type: string };
+  params: Promise<{ type: string }>;
 }) {
-  const type = params.type as ContentType;
+  const resolvedParams = await params;
+  const type = resolvedParams.type as ContentType;
   
   // music은 별도의 페이지가 있으므로 404 반환
   if (type === 'music' || !getAllContentTypes().includes(type)) {

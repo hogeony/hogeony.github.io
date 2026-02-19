@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { remark } from 'remark';
 import html from 'remark-html';
-import dynamic from 'next/dynamic';
+import remarkGfm from 'remark-gfm';
 
 interface SlideViewerProps {
   content: string;
@@ -98,11 +98,14 @@ export default function SlideViewer({ content }: SlideViewerProps) {
   }, []);
 
   useEffect(() => {
-    // 각 슬라이드를 HTML로 변환
+    // 각 슬라이드를 HTML로 변환 (표 지원을 위해 remark-gfm 사용)
     const processSlides = async () => {
       const processed = await Promise.all(
         slides.map(async (slide) => {
-          const processed = await remark().use(html).process(slide);
+          const processed = await remark()
+            .use(remarkGfm) // GitHub Flavored Markdown 지원 (표, 취소선 등)
+            .use(html)
+            .process(slide);
           return processed.toString();
         })
       );
@@ -236,23 +239,21 @@ export default function SlideViewer({ content }: SlideViewerProps) {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      {/* 슬라이드 뷰어 */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="aspect-video bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800 p-12 flex items-center justify-center min-h-[600px] relative">
-          <div
-            ref={slideContentRef}
-            key={`slide-${currentSlide}`}
-            className="w-full h-full flex flex-col justify-center slide-content"
-            dangerouslySetInnerHTML={{
-              __html: htmlSlides[currentSlide] || '',
-            }}
-          />
-        </div>
+    <div className="w-full">
+      {/* 슬라이드 뷰어 - 틀 제거, 어두운 배경 */}
+      <div className="bg-gradient-to-br from-gray-900 to-gray-800 py-12 px-6 flex items-center justify-center min-h-[70vh]">
+        <div
+          ref={slideContentRef}
+          key={`slide-${currentSlide}`}
+          className="w-full max-w-5xl flex flex-col justify-center slide-content"
+          dangerouslySetInnerHTML={{
+            __html: htmlSlides[currentSlide] || '',
+          }}
+        />
       </div>
 
       {/* 네비게이션 컨트롤 */}
-      <div className="mt-6 flex items-center justify-between">
+      <div className="mt-8 mb-4 flex items-center justify-between max-w-5xl mx-auto px-6">
         <button
           onClick={goToPrevious}
           disabled={currentSlide === 0}
@@ -287,30 +288,32 @@ export default function SlideViewer({ content }: SlideViewerProps) {
         </button>
       </div>
 
-      {/* 슬라이드 썸네일 네비게이션 */}
-      <div className="mt-6">
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`flex-shrink-0 w-24 h-16 rounded border-2 transition-all ${
-                index === currentSlide
-                  ? 'border-primary-500 ring-2 ring-primary-200 bg-primary-50 dark:bg-primary-900/20'
-                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-gray-100 dark:bg-gray-700'
-              }`}
-            >
-              <div className="p-2 text-xs text-center text-gray-600 dark:text-gray-400">
-                슬라이드 {index + 1}
-              </div>
-            </button>
-          ))}
-        </div>
+      {/* 키보드 단축키 안내 */}
+      <div className="text-center text-xs text-gray-500 dark:text-gray-400 mb-6">
+        키보드: ← → 또는 스페이스바로 이동
       </div>
 
-      {/* 키보드 단축키 안내 */}
-      <div className="mt-4 text-center text-xs text-gray-500 dark:text-gray-400">
-        키보드: ← → 또는 스페이스바로 이동
+      {/* 슬라이드 썸네일 네비게이션 - 맨 하단 */}
+      <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-8">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-thin">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`flex-shrink-0 w-24 h-16 rounded border-2 transition-all ${
+                  index === currentSlide
+                    ? 'border-primary-500 ring-2 ring-primary-200 bg-primary-50 dark:bg-primary-900/20'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 bg-gray-100 dark:bg-gray-700'
+                }`}
+              >
+                <div className="p-2 text-xs text-center text-gray-600 dark:text-gray-400">
+                  슬라이드 {index + 1}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

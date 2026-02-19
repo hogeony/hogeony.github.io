@@ -25,19 +25,20 @@ export function generateStaticParams() {
     }));
 }
 
-export default function TagPage({
+export default async function TagPage({
   params,
 }: {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
 }) {
-  // Next.js 14에서는 params가 자동으로 디코딩됨
+  const resolvedParams = await params;
+  // Next.js 16에서는 params가 Promise로 변경됨
   // 하지만 안전을 위해 디코딩 시도
-  let tag = params.tag;
+  let tag = resolvedParams.tag;
   try {
-    tag = decodeURIComponent(params.tag);
+    tag = decodeURIComponent(resolvedParams.tag);
   } catch (e) {
     // 이미 디코딩된 경우 그대로 사용
-    tag = params.tag;
+    tag = resolvedParams.tag;
   }
   
   const contents = getContentByTag(tag);

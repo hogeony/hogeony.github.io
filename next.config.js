@@ -18,6 +18,7 @@ const nextConfig = {
   generateBuildId: async () => {
     return 'build-' + Date.now();
   },
+  // Next.js 16에서는 Turbopack이 기본이지만, webpack을 사용하려면 명시적으로 설정
   // 개발 모드에서 파일 변경 감지 개선
   webpack: (config, { dev, isServer }) => {
     if (dev && !isServer) {
@@ -30,6 +31,8 @@ const nextConfig = {
     }
     return config;
   },
+  // Next.js 16에서는 Turbopack이 기본이지만, webpack 설정이 있으면 빈 turbopack 설정 필요
+  turbopack: {},
 }
 
 module.exports = nextConfig

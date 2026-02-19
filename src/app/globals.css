@@ -60,11 +60,15 @@ body {
   justify-content: center;
 }
 
+.slide-content {
+  color: #f9fafb !important; /* 기본 텍스트 색상 - 밝은 톤 */
+}
+
 .slide-content h1 {
   font-size: 3rem !important;
   font-weight: 800 !important;
   margin-bottom: 1.5rem !important;
-  color: #1f2937 !important;
+  color: #ffffff !important;
   text-align: center !important;
   line-height: 1.2 !important;
 }
@@ -74,8 +78,8 @@ body {
   font-weight: 700 !important;
   margin-top: 1.5rem !important;
   margin-bottom: 1rem !important;
-  color: #374151 !important;
-  border-bottom: 3px solid #3b82f6 !important;
+  color: #e5e7eb !important;
+  border-bottom: 3px solid #60a5fa !important;
   padding-bottom: 0.5rem !important;
 }
 
@@ -84,7 +88,7 @@ body {
   font-weight: 600 !important;
   margin-top: 1.5rem !important;
   margin-bottom: 0.75rem !important;
-  color: #4b5563 !important;
+  color: #d1d5db !important;
 }
 
 .slide-content ul,
@@ -92,45 +96,85 @@ body {
   margin-top: 1rem !important;
   margin-bottom: 1rem !important;
   padding-left: 2rem !important;
+  color: #f3f4f6 !important;
 }
 
 .slide-content li {
   margin-bottom: 0.5rem !important;
   font-size: 1.125rem !important;
   line-height: 1.75 !important;
+  color: #f3f4f6 !important;
 }
 
 .slide-content p {
   font-size: 1.125rem !important;
   line-height: 1.75 !important;
   margin-bottom: 1rem !important;
+  color: #f3f4f6 !important;
 }
 
 .slide-content blockquote {
-  border-left: 4px solid #3b82f6 !important;
+  border-left: 4px solid #60a5fa !important;
   padding-left: 1.5rem !important;
   margin: 1.5rem 0 !important;
   font-style: italic !important;
   font-size: 1.25rem !important;
-  color: #6b7280 !important;
-}
-
-.dark .slide-content h1 {
-  color: #f9fafb !important;
-}
-
-.dark .slide-content h2 {
-  color: #e5e7eb !important;
-  border-bottom-color: #60a5fa !important;
-}
-
-.dark .slide-content h3 {
   color: #d1d5db !important;
 }
 
-.dark .slide-content blockquote {
-  border-left-color: #60a5fa !important;
-  color: #9ca3af !important;
+.slide-content strong {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.slide-content em {
+  color: #e5e7eb !important;
+}
+
+.slide-content code {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #fbbf24 !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.25rem !important;
+}
+
+.slide-content pre {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  color: #f3f4f6 !important;
+  padding: 1rem !important;
+  border-radius: 0.5rem !important;
+  overflow-x: auto !important;
+}
+
+/* 표 스타일 - 어두운 배경에 맞춘 밝은 색상 */
+.slide-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+  font-size: 1rem !important;
+  color: #f3f4f6 !important;
+}
+
+.slide-content table th,
+.slide-content table td {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 0.75rem 1rem !important;
+  text-align: left !important;
+  color: #f3f4f6 !important;
+}
+
+.slide-content table th {
+  background-color: rgba(59, 130, 246, 0.3) !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+}
+
+.slide-content table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.slide-content table tr:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Mermaid 다이어그램 스타일 */

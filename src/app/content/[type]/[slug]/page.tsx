@@ -43,21 +43,22 @@ export function generateStaticParams() {
 export default async function ContentPage({
   params,
 }: {
-  params: { type: string; slug: string };
+  params: Promise<{ type: string; slug: string }>;
 }) {
-  const type = params.type as ContentType;
-  // Next.js 14에서는 params가 자동으로 디코딩됨
+  const resolvedParams = await params;
+  const type = resolvedParams.type as ContentType;
+  // Next.js 16에서는 params가 Promise로 변경됨
   // 하지만 공백이 포함된 경우 추가 처리 필요
-  let slug = params.slug;
+  let slug = resolvedParams.slug;
   
   // 디버깅을 위한 로그 (개발 환경에서만)
   if (process.env.NODE_ENV === 'development') {
-    console.log('ContentPage - Original slug:', params.slug);
+    console.log('ContentPage - Original slug:', resolvedParams.slug);
   }
   
   try {
     // 여러 번 인코딩된 경우를 대비해 반복 디코딩
-    let decoded = params.slug;
+    let decoded = resolvedParams.slug;
     let prevDecoded = '';
     let iterations = 0;
     while (decoded !== prevDecoded && iterations < 10) {
@@ -76,7 +77,7 @@ export default async function ContentPage({
     }
   } catch (e) {
     // 디코딩 실패 시 원본 사용
-    slug = params.slug;
+    slug = resolvedParams.slug;
   }
 
   if (!getAllContentTypes().includes(type)) {

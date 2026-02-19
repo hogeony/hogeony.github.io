@@ -60,17 +60,18 @@ export function generateStaticParams() {
     }));
 }
 
-export default function LectureDetailPage({
+export default async function LectureDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  let slug = params.slug;
+  const resolvedParams = await params;
+  let slug = resolvedParams.slug;
   
   try {
-    slug = decodeURIComponent(params.slug);
+    slug = decodeURIComponent(resolvedParams.slug);
   } catch {
-    slug = params.slug;
+    slug = resolvedParams.slug;
   }
 
   const lecture = getLectureBySlug(slug);
