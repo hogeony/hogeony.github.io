@@ -7,6 +7,7 @@ import { useState } from 'react';
 const navItems = [
   { href: '/', label: '홈' },
   { href: '/dashboard', label: '대시보드' },
+  { href: '/lecture', label: '인생학교' },
   { href: '/diary', label: '일기' },
   { href: '/essay', label: '에세이' },
   { href: '/art', label: '미술' },

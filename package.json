@@ -18,29 +18,31 @@
     "process-content": "tsx scripts/process-content.ts"
   },
   "dependencies": {
-    "next": "^14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "gray-matter": "^4.0.3",
-    "remark": "^15.0.1",
-    "remark-html": "^16.0.1",
-    "lunr": "^2.3.9",
     "date-fns": "^3.0.6",
     "framer-motion": "^10.16.16",
-    "openai": "^4.20.1"
+    "gray-matter": "^4.0.3",
+    "lunr": "^2.3.9",
+    "mermaid": "^11.12.3",
+    "next": "^14.0.4",
+    "openai": "^4.20.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "remark-mermaidjs": "^7.0.0"
   },
   "devDependencies": {
+    "@types/lunr": "^2.3.5",
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
-    "@types/lunr": "^2.3.5",
-    "typescript": "^5.3.3",
-    "tailwindcss": "^3.4.0",
-    "postcss": "^8.4.32",
     "autoprefixer": "^10.4.16",
-    "tsx": "^4.7.0",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.0.4"
+    "eslint-config-next": "^14.0.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=18.0.0"

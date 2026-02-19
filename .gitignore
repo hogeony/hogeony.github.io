@@ -1,3 +1,12 @@
+# Obsidian (개인 노트 앱)
+content/.obsidian
+
+# Environment variables (보안)
+.env
+.env*.local
+.env.production
+.env.development
+
 # Dependencies
 node_modules/
 /.pnp
@@ -17,15 +26,16 @@ node_modules/
 # Misc
 .DS_Store
 *.pem
+*.key
+*.cert
+*.crt
 
-# Debug
+# Debug & Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Local env files
-.env*.local
-.env
+*.log
+logs/
 
 # Vercel
 .vercel
@@ -37,9 +47,28 @@ next-env.d.ts
 # Data files (generated)
 /data/index.json
 /data/search-index.json
+/public/content-data.json
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*.sublime-*
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*.tmp
+*.orig
+*~
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache

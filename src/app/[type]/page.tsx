@@ -14,9 +14,12 @@ const typeLabels: Record<ContentType, string> = {
 };
 
 export function generateStaticParams() {
-  return getAllContentTypes().map((type) => ({
-    type: type,
-  }));
+  // music은 별도의 페이지가 있으므로 제외
+  return getAllContentTypes()
+    .filter((type) => type !== 'music')
+    .map((type) => ({
+      type: type,
+    }));
 }
 
 export default function TypePage({
@@ -26,7 +29,8 @@ export default function TypePage({
 }) {
   const type = params.type as ContentType;
   
-  if (!getAllContentTypes().includes(type)) {
+  // music은 별도의 페이지가 있으므로 404 반환
+  if (type === 'music' || !getAllContentTypes().includes(type)) {
     notFound();
   }
 

@@ -157,15 +157,15 @@ export default function MusicPageClient({ initialContents }: MusicPageClientProp
         <p className="text-gray-600 dark:text-gray-400">
           총 {initialContents.length}개의 곡
           {selectedSongs.size > 0 && (
-            <span className="ml-2 text-primary-600">
+            <span className="ml-2 text-primary-600 font-semibold">
               ({selectedSongs.size}개 선택됨)
             </span>
           )}
         </p>
       </div>
 
-      {/* 플레이리스트 컨트롤 */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+      {/* 플레이리스트 컨트롤 - 항상 표시 */}
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
         <div className="flex flex-wrap gap-2 items-center">
           <button
             onClick={selectAll}
@@ -242,6 +242,7 @@ export default function MusicPageClient({ initialContents }: MusicPageClientProp
           playlist={playlist}
           autoplay={true}
           shuffle={shuffleMode}
+          onClose={stopPlaylist}
         />
       )}
     </div>

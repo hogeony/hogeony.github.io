@@ -1,27 +1,21 @@
 ---
 type: music
-title: 입술의 말
-singer: M.C. The MAX
-date: 2017-04-14
-tags:
-  - 팝
-  - 발라드
-  - 감성
-  - 커버곡
-source: ""
+title: "입술의 말"
+singer: "M.C the MAX (엠씨더맥스)"
+date: 2017-04-13
+tags: [발라드, 록발라드,감성]
+source: "정규 7집 'UNVEILING' 수록곡"
 media:
   - type: youtube
-    url: https://www.youtube.com/watch?v=mfAg5klUvFs
+    url: "https://www.youtube.com/watch?v=mfAg5klUvFs"
     thumbnail: ""
-    title: 입술의 말
-tldr: "\tUnveiling"
+    title: "엠씨더맥스 (M.C the MAX) - 입술의 말"
+tldr: "엠씨더맥스 7집 'UNVEILING'에 수록된 곡으로, 차분한 피아노와 스트링 위에 폭발적인 후반부 보컬이 더해지는 감성 록발라드."
 meta:
-  generated: 2024-01-15T10:00:00Z
+  generated: "2024-01-15T10:00:00Z"
   llm_model: ""
   sentiment: neutral
-  keywords:
-    - 샘플
-    - 음악
+  keywords: [발라드, 록발라드, 이별, 감성, 엠씨더맥스]
 ---
 아무 일 없듯이 굳게 잠긴 말들
 돌아서는 뒷모습에 들리지 않는 인사를

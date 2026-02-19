@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // GitHub Pages용 정적 export
+  // 개발 모드에서는 export 비활성화 (실시간 반영)
+  // 프로덕션 빌드에서만 export 활성화
+  ...(process.env.NODE_ENV === 'production' && { output: 'export' }),
   images: {
     unoptimized: true, // GitHub Pages는 이미지 최적화 미지원
   },
@@ -15,6 +17,18 @@ const nextConfig = {
   // 파일명에 특수문자가 포함된 경우를 위한 설정
   generateBuildId: async () => {
     return 'build-' + Date.now();
+  },
+  // 개발 모드에서 파일 변경 감지 개선
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      // 클라이언트 사이드에서 파일 변경 감지
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ['**/node_modules/**', '**/.git/**'],
+        poll: 1000, // 1초마다 파일 변경 확인
+      };
+    }
+    return config;
   },
 }
 
